@@ -204,8 +204,8 @@
 </head>
 <body>
 
-    <audio id="bgMusic" loop>
-        <source src="lagu_galau.mp3" type="audio/mpeg">
+    <audio id="bgMusic" loop preload="auto">
+        <source src="lagu_galau.mp3.mpeg">
     </audio>
 
     <div class="mobile-wrapper" id="appWrapper">
@@ -332,7 +332,6 @@
             
             const noWA = "6282238398411";
             
-            // Pesan WhatsApp direvisi agar lebih bagus dan tanpa emoji Unicode yang rentan error
             const pesan = "Hai... aku udah baca semuanya. Iya, aku maafin kamu. Tolong dengerin perasaanku lebih baik lagi ya :)";
             
             const whatsappURL = `https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`;
