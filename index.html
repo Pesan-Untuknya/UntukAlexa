@@ -15,7 +15,7 @@
         }
 
         body {
-            background-color: #030105; /* Deep dark background */
+            background-color: #030105;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -164,15 +164,25 @@
         /* Tap indicator */
         .tap-indicator {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             color: rgba(255, 255, 255, 0.5);
             font-size: 0.8rem;
             letter-spacing: 2px;
             z-index: 2;
+            text-align: center;
+            width: 100%;
             animation: pulse 2s infinite;
             pointer-events: none;
+        }
+
+        .volume-hint {
+            display: block;
+            font-size: 0.65rem;
+            margin-top: 5px;
+            opacity: 0.7;
+            color: #ff7eb3;
         }
 
         @keyframes pulse {
@@ -194,6 +204,10 @@
 </head>
 <body>
 
+    <audio id="bgMusic" loop>
+        <source src="let_down.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="mobile-wrapper" id="appWrapper">
         <div class="glow-orb orb-1"></div>
         <div class="glow-orb orb-2"></div>
@@ -213,11 +227,14 @@
             </div>
         </div>
 
-        <div id="tapIndicator" class="tap-indicator">TAP LAYAR UNTUK LANJUT</div>
+        <div id="tapIndicator" class="tap-indicator">
+            TAP LAYAR UNTUK MULAI
+            <span class="volume-hint" id="volHint">(Pastikan volume HP menyala)</span>
+        </div>
     </div>
 
     <script>
-        // --- 1. DATA TEXT STORYLINE (Lebih Romantis & Panjang) ---
+        // --- 1. DATA TEXT STORYLINE ---
         const storyLines = [
             "Halo, Alexa...",
             "Mungkin kamu kaget lihat ini. Tapi tolong kasih aku waktu sebentar.",
@@ -233,25 +250,36 @@
         ];
 
         let currentStep = 0;
+        let isMusicPlaying = false;
         
         // --- 2. DOM ELEMENTS ---
         const textDisplay = document.getElementById('textDisplay');
         const touchArea = document.getElementById('touchArea');
         const tapIndicator = document.getElementById('tapIndicator');
+        const volHint = document.getElementById('volHint');
         const actionArea = document.getElementById('actionArea');
         const mainCard = document.getElementById('mainCard');
         const btnNo = document.getElementById('btnNo');
         const btnYes = document.getElementById('btnYes');
         const wrapper = document.getElementById('appWrapper');
+        const bgMusic = document.getElementById('bgMusic');
 
-        // --- 3. TEXT PROGRESSION LOGIC ---
+        // --- 3. TEXT & AUDIO PROGRESSION LOGIC ---
         touchArea.addEventListener('click', () => {
+            // Mainkan musik pada tap pertama
+            if (!isMusicPlaying) {
+                bgMusic.play().catch(e => console.log("Menunggu interaksi pengguna untuk audio"));
+                isMusicPlaying = true;
+                volHint.style.display = 'none'; // Hilangkan teks hint volume
+                tapIndicator.innerHTML = "TAP LAYAR UNTUK LANJUT"; // Ubah teks instruksi
+            }
+
             if (currentStep >= storyLines.length - 1) return;
 
             currentStep++;
             textDisplay.classList.remove('active');
             
-            if (navigator.vibrate) navigator.vibrate(20); // Haptic halus
+            if (navigator.vibrate) navigator.vibrate(20); 
             
             setTimeout(() => {
                 if (storyLines[currentStep] === "") {
@@ -265,7 +293,7 @@
                     textDisplay.textContent = storyLines[currentStep];
                     textDisplay.classList.add('active');
                 }
-            }, 600); // Waktu jeda transisi teks
+            }, 600); 
         });
 
         // --- 4. RUNAWAY BUTTON LOGIC ---
@@ -298,21 +326,23 @@
             btnNo.addEventListener('mouseover', dodgeCursor);
         }
 
-        // --- 5. YES BUTTON SUCCESS & WHATSAPP REDIRECT (MOBILE FIX) ---
+        // --- 5. YES BUTTON SUCCESS & WHATSAPP REDIRECT ---
         btnYes.addEventListener('click', () => {
             if (navigator.vibrate) navigator.vibrate([50, 100, 50]); 
             
             const noWA = "6282238398411";
-            const pesan = "Hai, aku udah liat websitenya. Iya, aku maafin kamu kok. ❤️";
+            
+            // Pesan WhatsApp direvisi agar lebih bagus dan tanpa emoji Unicode yang rentan error
+            const pesan = "Hai... aku udah baca semuanya. Iya, aku maafin kamu. Tolong dengerin perasaanku lebih baik lagi ya :)";
+            
             const whatsappURL = `https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`;
 
-            // Ubah tampilan UI dengan menambahkan fallback button
             actionArea.innerHTML = `
                 <div class="text-content active" style="font-size: 1.8rem; color: #ff7eb3; font-weight:600; text-shadow: 0 0 20px rgba(255,126,179,0.8);">
-                    Terima kasih, Alexa ❤️
+                    Makasih ya, Alexa :)
                 </div>
                 <div class="text-content active" style="font-size: 0.9rem; margin-top:10px; color:#e0e0e0;">
-                    Aku janji akan lebih peka dan ngertiin kamu.
+                    Aku janji akan lebih peka.
                 </div>
                 <a href="${whatsappURL}" class="btn btn-yes" style="margin-top: 30px; padding: 12px 20px; font-size: 0.9rem;">
                     Lanjut ke WhatsApp
@@ -324,13 +354,12 @@
             mainCard.style.padding = "50px 25px";
             triggerFireworks();
 
-            // Coba redirect otomatis setelah 2.5 detik (kembang api jalan dulu)
             setTimeout(() => {
                 window.location.href = whatsappURL;
             }, 2500); 
         });
 
-        // --- 6. ADVANCED PARTICLE ENGINE (Twinkling Stars + Glowing Orbs) ---
+        // --- 6. ADVANCED PARTICLE ENGINE ---
         const canvas = document.getElementById('particlesCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -361,7 +390,7 @@
                     this.speedX = (Math.random() - 0.5) * 0.3;
                     this.speedY = (Math.random() - 0.5) * 1 - 0.5; 
                     this.alpha = Math.random() * 0.5 + 0.1;
-                    this.alphaChange = (Math.random() * 0.02) - 0.01; // Efek berkelap-kelip (twinkling)
+                    this.alphaChange = (Math.random() * 0.02) - 0.01; 
                 }
             }
 
@@ -370,16 +399,13 @@
                 this.y += this.speedY;
 
                 if (this.isFirework) {
-                    this.speedY += 0.08; // Gravitasi kembang api
+                    this.speedY += 0.08; 
                     this.life -= this.decay;
                 } else {
-                    // Logika berkelap-kelip
                     this.alpha += this.alphaChange;
                     if (this.alpha <= 0.1 || this.alpha >= 0.8) {
                         this.alphaChange *= -1;
                     }
-
-                    // Reset partikel jika keluar layar
                     if (this.y < -10) {
                         this.y = canvas.height + 10;
                         this.x = Math.random() * canvas.width;
@@ -403,7 +429,6 @@
             }
         }
 
-        // Inisialisasi partikel ambient
         for (let i = 0; i < 80; i++) {
             particles.push(new Particle());
         }
@@ -422,7 +447,6 @@
         }
 
         function animate() {
-            // Efek jejak blur yang halus
             ctx.fillStyle = 'rgba(8, 2, 10, 0.3)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
