@@ -15,26 +15,26 @@
         }
 
         body {
-            background-color: #030105;
+            background-color: #030105; /* Background sangat gelap untuk PC */
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden;
         }
 
-        /* Mobile Exclusive Wrapper */
+        /* Mobile Wrapper - Responsif 100% di HP */
         .mobile-wrapper {
             position: relative;
-            width: 100%;
-            max-width: 430px;
-            height: 100dvh;
-            max-height: 932px;
-            background: radial-gradient(circle at center, #260a2b 0%, #08020a 100%);
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh; /* Dynamic viewport height untuk browser HP (Chrome/Safari) */
+            max-width: 480px; /* Hanya membatasi lebar jika dibuka di layar besar (PC/Tablet) */
+            background: linear-gradient(135deg, #16041a 0%, #08020a 100%);
             overflow: hidden;
-            box-shadow: 0 0 50px rgba(255, 42, 117, 0.2);
+            box-shadow: 0 0 50px rgba(255, 42, 117, 0.1);
         }
 
         /* Particle Canvas */
@@ -48,22 +48,22 @@
             pointer-events: none;
         }
 
-        /* Glowing Background Orbs */
+        /* Glowing Background Orbs yang Bergerak Halus */
         .glow-orb {
             position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,126,179,0.3) 0%, rgba(0,0,0,0) 70%);
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255,42,117,0.15) 0%, rgba(0,0,0,0) 70%);
             border-radius: 50%;
             z-index: 1;
-            animation: floatGlow 8s infinite alternate ease-in-out;
+            animation: floatGlow 10s infinite alternate ease-in-out;
         }
-        .orb-1 { top: -50px; left: -50px; }
-        .orb-2 { bottom: -50px; right: -50px; animation-delay: -4s; }
+        .orb-1 { top: -80px; left: -80px; }
+        .orb-2 { bottom: -80px; right: -80px; animation-delay: -5s; background: radial-gradient(circle, rgba(140,82,255,0.15) 0%, rgba(0,0,0,0) 70%); }
 
         @keyframes floatGlow {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, 40px) scale(1.2); }
+            100% { transform: translate(40px, 60px) scale(1.3); }
         }
 
         /* Glassmorphism Card for Content */
@@ -72,16 +72,16 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 85%;
+            width: 88%;
             padding: 40px 25px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
             z-index: 5;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.03);
             transition: all 0.5s ease;
         }
 
@@ -89,11 +89,11 @@
             color: #ffffff;
             font-size: 1.15rem;
             font-weight: 300;
-            line-height: 1.6;
+            line-height: 1.7;
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 1s ease, transform 1s ease;
-            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
         }
 
         .text-content.active {
@@ -107,7 +107,7 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 10px;
             opacity: 0;
             transition: opacity 1s ease;
         }
@@ -137,7 +137,7 @@
         .btn-yes {
             background: linear-gradient(135deg, #ff2a75, #ff7eb3);
             color: white;
-            box-shadow: 0 5px 20px rgba(255, 42, 117, 0.5);
+            box-shadow: 0 5px 25px rgba(255, 42, 117, 0.4);
             margin-bottom: 15px;
             position: relative;
             z-index: 10;
@@ -145,10 +145,6 @@
 
         .btn-yes:active {
             transform: scale(0.95);
-        }
-
-        .btn-yes:hover {
-            box-shadow: 0 8px 25px rgba(255, 42, 117, 0.7);
         }
 
         .btn-no {
@@ -164,10 +160,10 @@
         /* Tap indicator */
         .tap-indicator {
             position: absolute;
-            bottom: 30px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.6);
             font-size: 0.8rem;
             letter-spacing: 2px;
             z-index: 2;
@@ -187,7 +183,7 @@
 
         @keyframes pulse {
             0% { opacity: 0.2; transform: translate(-50%, 0px); }
-            50% { opacity: 0.8; transform: translate(-50%, -5px); }
+            50% { opacity: 0.9; transform: translate(-50%, -5px); }
             100% { opacity: 0.2; transform: translate(-50%, 0px); }
         }
 
@@ -219,8 +215,8 @@
             <div id="textDisplay" class="text-content active">Halo, Alexa...</div>
             
             <div id="actionArea" class="action-area">
-                <div class="text-content active" style="font-weight: 500; margin-bottom: 30px; font-size: 1.3rem;">
-                    Dari lubuk hatiku,<br>Apakah kamu mau memaafkanku?
+                <div class="text-content active" style="font-weight: 500; margin-bottom: 25px; font-size: 1.25rem;">
+                    Jadi... dari lubuk hatiku,<br>Apakah kamu mau memaafkanku?
                 </div>
                 <button class="btn btn-yes" id="btnYes">Iya, Aku Maafkan</button>
                 <button class="btn btn-no" id="btnNo">Nggak Mau</button>
@@ -234,18 +230,16 @@
     </div>
 
     <script>
-        // --- 1. DATA TEXT STORYLINE ---
+        // --- 1. DATA TEXT STORYLINE (TENTANG GAME & VOICE CALL) ---
         const storyLines = [
             "Halo, Alexa...",
-            "Mungkin kamu kaget lihat ini. Tapi tolong kasih aku waktu sebentar.",
-            "Aku tahu, belakangan ini aku sering banget bikin kamu kecewa.",
-            "Aku sadar, seringkali aku jadi cowok yang gagal memahami apa yang sebenarnya kamu rasakan.",
-            "Terkadang logikaku terlalu egois untuk sekadar mengerti bahasa hatimu.",
-            "Maaf ya, karena aku belum bisa jadi sosok yang sempurna buat kamu.",
-            "Tapi satu hal yang harus kamu tahu...",
-            "Senyum dan tawa kamu adalah hal yang paling berharga buatku.",
-            "Kehilangan itu adalah ketakutan terbesarku.",
-            "Aku sayang banget sama kamu, dan aku janji ingin terus belajar jadi lebih baik untuk kita.",
+            "Maaf ya, belakangan ini aku sadar banget kalau aku sering bikin kamu ngerasa sendirian.",
+            "Aku terlalu asyik dengan duniaku sendiri. Terlalu sering sibuk main game sampai lupa waktu.",
+            "Aku lupa ngajak kamu main bareng, dan bahkan jarang banget ngeluangin waktu buat sekadar ngobrol atau dengerin suara kamu...",
+            "Padahal, jujur aja... mendengar suara kamu dan ngobrol sama kamu itu jauh lebih berharga dari game apa pun yang aku mainin.",
+            "Maaf kalau keegoisanku bikin kamu ngerasa nggak diprioritaskan. Itu beneran salahku.",
+            "Aku benar-benar nyesel, dan aku kangen banget ketawa bareng kamu.",
+            "Aku janji bakal lebih merhatiin kamu, ngajak kamu main bareng, dan banyakin waktu ngobrol buat kita.",
             "" // String kosong memicu halaman pertanyaan
         ];
 
@@ -270,8 +264,8 @@
             if (!isMusicPlaying) {
                 bgMusic.play().catch(e => console.log("Menunggu interaksi pengguna untuk audio"));
                 isMusicPlaying = true;
-                volHint.style.display = 'none'; // Hilangkan teks hint volume
-                tapIndicator.innerHTML = "TAP LAYAR UNTUK LANJUT"; // Ubah teks instruksi
+                volHint.style.display = 'none'; 
+                tapIndicator.innerHTML = "TAP LAYAR UNTUK LANJUT"; 
             }
 
             if (currentStep >= storyLines.length - 1) return;
@@ -331,9 +325,8 @@
             if (navigator.vibrate) navigator.vibrate([50, 100, 50]); 
             
             const noWA = "6282238398411";
-            
-            const pesan = "Hai... aku udah baca semuanya. Iya, aku maafin kamu. Tolong dengerin perasaanku lebih baik lagi ya :)";
-            
+            // Pesan disesuaikan dengan konteks gaming/suara
+            const pesan = "Hai... aku udah baca semuanya. Iya, aku maafin. Awas aja kalau asyik nge-game sendiri lagi dan lupa ngajak ngobrol! :)";
             const whatsappURL = `https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`;
 
             actionArea.innerHTML = `
@@ -341,7 +334,7 @@
                     Makasih ya, Alexa :)
                 </div>
                 <div class="text-content active" style="font-size: 0.9rem; margin-top:10px; color:#e0e0e0;">
-                    Aku janji akan lebih peka.
+                    Aku janji nggak akan main sendiri terus.
                 </div>
                 <a href="${whatsappURL}" class="btn btn-yes" style="margin-top: 30px; padding: 12px 20px; font-size: 0.9rem;">
                     Lanjut ke WhatsApp
@@ -355,10 +348,10 @@
 
             setTimeout(() => {
                 window.location.href = whatsappURL;
-            }, 2500); 
+            }, 3000); 
         });
 
-        // --- 6. ADVANCED PARTICLE ENGINE ---
+        // --- 6. ADVANCED PARTICLE ENGINE (Stars, Hearts, & Shooting Stars) ---
         const canvas = document.getElementById('particlesCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -370,21 +363,31 @@
         resizeCanvas();
 
         let particles = [];
-        const colors = ['#ff7eb3', '#ff2a75', '#ffffff', '#ffd1e8'];
+        let shootingStars = [];
 
+        // Class untuk Bintang Biasa dan Hati
         class Particle {
             constructor(isFirework = false, x, y) {
                 this.isFirework = isFirework;
                 this.x = x !== undefined ? x : Math.random() * canvas.width;
                 this.y = y !== undefined ? y : Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.type = Math.random() > 0.85 ? 'heart' : 'star'; // 15% partikel berbentuk hati
+                
+                if (this.type === 'heart') {
+                    this.size = Math.random() * 0.8 + 0.4;
+                    this.color = '#ff2a75';
+                } else {
+                    this.size = Math.random() * 1.5 + 0.5;
+                    this.color = Math.random() > 0.5 ? '#ffffff' : '#ffd1e8';
+                }
                 
                 if (isFirework) {
                     this.speedX = (Math.random() - 0.5) * (Math.random() * 15);
                     this.speedY = (Math.random() - 0.5) * (Math.random() * 15);
                     this.life = 1;
                     this.decay = Math.random() * 0.015 + 0.01;
+                    this.type = 'star'; // Kembang api pakai bentuk bintang/bulat saja
+                    this.color = ['#ff7eb3', '#ff2a75', '#ffffff', '#ffd1e8'][Math.floor(Math.random() * 4)];
                 } else {
                     this.speedX = (Math.random() - 0.5) * 0.3;
                     this.speedY = (Math.random() - 0.5) * 1 - 0.5; 
@@ -405,35 +408,112 @@
                     if (this.alpha <= 0.1 || this.alpha >= 0.8) {
                         this.alphaChange *= -1;
                     }
-                    if (this.y < -10) {
-                        this.y = canvas.height + 10;
+                    if (this.y < -20) {
+                        this.y = canvas.height + 20;
                         this.x = Math.random() * canvas.width;
                     }
-                    if (this.x < -10 || this.x > canvas.width + 10) {
+                    if (this.x < -20 || this.x > canvas.width + 20) {
                         this.speedX *= -1;
                     }
                 }
             }
 
-            draw() {
+            drawHeart(ctx, x, y, size) {
                 ctx.save();
-                ctx.globalAlpha = this.isFirework ? Math.max(0, this.life) : this.alpha;
+                ctx.translate(x, y);
+                ctx.scale(size, size);
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(0, -3, -5, -3, -5, 0);
+                ctx.bezierCurveTo(-5, 3, 0, 5, 0, 7);
+                ctx.bezierCurveTo(0, 5, 5, 3, 5, 0);
+                ctx.bezierCurveTo(5, -3, 0, -3, 0, 0);
                 ctx.fillStyle = this.color;
-                ctx.shadowBlur = this.isFirework ? 15 : 8;
+                ctx.shadowBlur = 10;
                 ctx.shadowColor = this.color;
                 ctx.fill();
                 ctx.restore();
             }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.isFirework ? Math.max(0, this.life) : this.alpha;
+                
+                if (this.type === 'heart' && !this.isFirework) {
+                    this.drawHeart(ctx, this.x, this.y, this.size);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.shadowBlur = this.isFirework ? 15 : 8;
+                    ctx.shadowColor = this.color;
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
         }
 
-        for (let i = 0; i < 80; i++) {
+        // Class untuk Bintang Jatuh (Shooting Stars)
+        class ShootingStar {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.x = Math.random() * canvas.width * 1.5;
+                this.y = 0;
+                this.len = Math.random() * 80 + 20;
+                this.speed = Math.random() * 10 + 5;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.waitTime = Math.random() * 300 + 100;
+                this.active = false;
+            }
+
+            update() {
+                if (this.active) {
+                    this.x -= this.speed;
+                    this.y += this.speed;
+                    if (this.x < -100 || this.y > canvas.height + 100) {
+                        this.reset();
+                    }
+                } else {
+                    this.waitTime--;
+                    if (this.waitTime <= 0) {
+                        this.active = true;
+                    }
+                }
+            }
+
+            draw() {
+                if (!this.active) return;
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x + this.len, this.y - this.len);
+                ctx.lineWidth = this.size;
+                
+                // Gradient untuk ekor bintang jatuh
+                let grad = ctx.createLinearGradient(this.x, this.y, this.x + this.len, this.y - this.len);
+                grad.addColorStop(0, "rgba(255, 255, 255, 1)");
+                grad.addColorStop(1, "rgba(255, 255, 255, 0)");
+                
+                ctx.strokeStyle = grad;
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        // Inisialisasi
+        for (let i = 0; i < 70; i++) {
             particles.push(new Particle());
+        }
+        for (let i = 0; i < 2; i++) {
+            shootingStars.push(new ShootingStar());
         }
 
         function triggerFireworks() {
-            particles = []; 
+            particles = []; // Hapus background particles
+            shootingStars = []; // Matikan bintang jatuh
             for(let i=0; i<4; i++) {
                 setTimeout(() => {
                     const originX = canvas.width/2 + (Math.random()-0.5)*150;
@@ -449,6 +529,7 @@
             ctx.fillStyle = 'rgba(8, 2, 10, 0.3)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            // Animasikan partikel (bintang + hati)
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
                 p.update();
@@ -458,6 +539,13 @@
                     particles.splice(i, 1);
                 }
             }
+            
+            // Animasikan bintang jatuh
+            for (let star of shootingStars) {
+                star.update();
+                star.draw();
+            }
+            
             requestAnimationFrame(animate);
         }
 
