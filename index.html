@@ -15,7 +15,7 @@
         }
 
         body {
-            background-color: #050505;
+            background-color: #030105; /* Deep dark background */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -32,9 +32,9 @@
             max-width: 430px;
             height: 100dvh;
             max-height: 932px;
-            background: radial-gradient(circle at top right, #2b1031, #0a0612);
+            background: radial-gradient(circle at center, #260a2b 0%, #08020a 100%);
             overflow: hidden;
-            box-shadow: 0 0 40px rgba(255, 42, 117, 0.15);
+            box-shadow: 0 0 50px rgba(255, 42, 117, 0.2);
         }
 
         /* Particle Canvas */
@@ -48,6 +48,24 @@
             pointer-events: none;
         }
 
+        /* Glowing Background Orbs */
+        .glow-orb {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,126,179,0.3) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            z-index: 1;
+            animation: floatGlow 8s infinite alternate ease-in-out;
+        }
+        .orb-1 { top: -50px; left: -50px; }
+        .orb-2 { bottom: -50px; right: -50px; animation-delay: -4s; }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 40px) scale(1.2); }
+        }
+
         /* Glassmorphism Card for Content */
         .glass-card {
             position: absolute;
@@ -56,26 +74,26 @@
             transform: translate(-50%, -50%);
             width: 85%;
             padding: 40px 25px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
             z-index: 5;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.02);
             transition: all 0.5s ease;
         }
 
         .text-content {
             color: #ffffff;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 300;
             line-height: 1.6;
             opacity: 0;
-            transform: translateY(15px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
         }
 
         .text-content.active {
@@ -89,7 +107,7 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            margin-top: 30px;
+            margin-top: 20px;
             opacity: 0;
             transition: opacity 1s ease;
         }
@@ -103,19 +121,23 @@
             font-family: 'Poppins', sans-serif;
             font-size: 1rem;
             font-weight: 500;
-            padding: 12px 30px;
+            padding: 14px 30px;
             border-radius: 30px;
             border: none;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
             width: 100%;
-            max-width: 200px;
+            max-width: 220px;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .btn-yes {
             background: linear-gradient(135deg, #ff2a75, #ff7eb3);
             color: white;
-            box-shadow: 0 4px 15px rgba(255, 42, 117, 0.4);
+            box-shadow: 0 5px 20px rgba(255, 42, 117, 0.5);
             margin-bottom: 15px;
             position: relative;
             z-index: 10;
@@ -125,10 +147,15 @@
             transform: scale(0.95);
         }
 
+        .btn-yes:hover {
+            box-shadow: 0 8px 25px rgba(255, 42, 117, 0.7);
+        }
+
         .btn-no {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             color: #ccc;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
             position: absolute;
             bottom: -60px;
             z-index: 10;
@@ -140,9 +167,9 @@
             bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.85rem;
-            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
             z-index: 2;
             animation: pulse 2s infinite;
             pointer-events: none;
@@ -150,11 +177,11 @@
 
         @keyframes pulse {
             0% { opacity: 0.2; transform: translate(-50%, 0px); }
-            50% { opacity: 0.7; transform: translate(-50%, -5px); }
+            50% { opacity: 0.8; transform: translate(-50%, -5px); }
             100% { opacity: 0.2; transform: translate(-50%, 0px); }
         }
 
-        /* Touch target overlay for tapping to next text */
+        /* Touch target overlay */
         .touch-overlay {
             position: absolute;
             top: 0;
@@ -168,15 +195,19 @@
 <body>
 
     <div class="mobile-wrapper" id="appWrapper">
-        <canvas id="particlesCanvas"></canvas>
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
         
+        <canvas id="particlesCanvas"></canvas>
         <div class="touch-overlay" id="touchArea"></div>
 
         <div class="glass-card" id="mainCard">
             <div id="textDisplay" class="text-content active">Halo, Alexa...</div>
             
             <div id="actionArea" class="action-area">
-                <div class="text-content active" style="font-weight: 500; margin-bottom: 25px;">Apakah kamu mau memaafkanku?</div>
+                <div class="text-content active" style="font-weight: 500; margin-bottom: 30px; font-size: 1.3rem;">
+                    Dari lubuk hatiku,<br>Apakah kamu mau memaafkanku?
+                </div>
                 <button class="btn btn-yes" id="btnYes">Iya, Aku Maafkan</button>
                 <button class="btn btn-no" id="btnNo">Nggak Mau</button>
             </div>
@@ -186,17 +217,19 @@
     </div>
 
     <script>
-        // --- 1. DATA TEXT PERBUCINAN ---
+        // --- 1. DATA TEXT STORYLINE (Lebih Romantis & Panjang) ---
         const storyLines = [
             "Halo, Alexa...",
-            "Mungkin caraku ini sedikit berlebihan, tapi ini usahaku.",
-            "Aku sadar, selama ini aku adalah cowok yang sering gagal membaca perasaanmu.",
-            "Seringkali logikaku tak sejalan dengan apa yang hatimu butuhkan.",
-            "Maafkan egoku... maafkan ketidakpekaanku.",
-            "Kehilangan tawamu adalah bagian terberat buatku.",
-            "Aku membuat ini khusus untukmu...",
-            "Sebagai tanda bahwa aku benar-benar ingin memperbaiki semuanya dan memahamimu.",
-            "" // String kosong memicu pertanyaan terakhir
+            "Mungkin kamu kaget lihat ini. Tapi tolong kasih aku waktu sebentar.",
+            "Aku tahu, belakangan ini aku sering banget bikin kamu kecewa.",
+            "Aku sadar, seringkali aku jadi cowok yang gagal memahami apa yang sebenarnya kamu rasakan.",
+            "Terkadang logikaku terlalu egois untuk sekadar mengerti bahasa hatimu.",
+            "Maaf ya, karena aku belum bisa jadi sosok yang sempurna buat kamu.",
+            "Tapi satu hal yang harus kamu tahu...",
+            "Senyum dan tawa kamu adalah hal yang paling berharga buatku.",
+            "Kehilangan itu adalah ketakutan terbesarku.",
+            "Aku sayang banget sama kamu, dan aku janji ingin terus belajar jadi lebih baik untuk kita.",
+            "" // String kosong memicu halaman pertanyaan
         ];
 
         let currentStep = 0;
@@ -218,7 +251,7 @@
             currentStep++;
             textDisplay.classList.remove('active');
             
-            if (navigator.vibrate) navigator.vibrate(30);
+            if (navigator.vibrate) navigator.vibrate(20); // Haptic halus
             
             setTimeout(() => {
                 if (storyLines[currentStep] === "") {
@@ -232,7 +265,7 @@
                     textDisplay.textContent = storyLines[currentStep];
                     textDisplay.classList.add('active');
                 }
-            }, 500); 
+            }, 600); // Waktu jeda transisi teks
         });
 
         // --- 4. RUNAWAY BUTTON LOGIC ---
@@ -243,7 +276,6 @@
 
             const dodgeCursor = (e) => {
                 e.preventDefault();
-                
                 const wrapperRect = wrapper.getBoundingClientRect();
                 const btnWidth = btnNo.offsetWidth;
                 const btnHeight = btnNo.offsetHeight;
@@ -259,41 +291,46 @@
                 btnNo.style.top = `${randomY}px`;
                 btnNo.style.bottom = "auto";
                 btnNo.style.transform = "none";
-                btnNo.style.transition = "all 0.15s ease-out";
+                btnNo.style.transition = "all 0.2s cubic-bezier(0.25, 1, 0.5, 1)";
             };
 
             btnNo.addEventListener('touchstart', dodgeCursor, {passive: false});
             btnNo.addEventListener('mouseover', dodgeCursor);
         }
 
-        // --- 5. YES BUTTON SUCCESS & WHATSAPP REDIRECT ---
+        // --- 5. YES BUTTON SUCCESS & WHATSAPP REDIRECT (MOBILE FIX) ---
         btnYes.addEventListener('click', () => {
-            if (navigator.vibrate) navigator.vibrate([50, 50, 50]); 
+            if (navigator.vibrate) navigator.vibrate([50, 100, 50]); 
             
+            const noWA = "6282238398411";
+            const pesan = "Hai, aku udah liat websitenya. Iya, aku maafin kamu kok. ❤️";
+            const whatsappURL = `https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`;
+
+            // Ubah tampilan UI dengan menambahkan fallback button
             actionArea.innerHTML = `
-                <div class="text-content active" style="font-size: 1.5rem; color: #ff7eb3; font-weight:600;">
+                <div class="text-content active" style="font-size: 1.8rem; color: #ff7eb3; font-weight:600; text-shadow: 0 0 20px rgba(255,126,179,0.8);">
                     Terima kasih, Alexa ❤️
                 </div>
-                <div class="text-content active" style="font-size: 0.85rem; margin-top:10px; color:#e0e0e0;">
-                    Mengarahkan ke WhatsApp...
+                <div class="text-content active" style="font-size: 0.9rem; margin-top:10px; color:#e0e0e0;">
+                    Aku janji akan lebih peka dan ngertiin kamu.
+                </div>
+                <a href="${whatsappURL}" class="btn btn-yes" style="margin-top: 30px; padding: 12px 20px; font-size: 0.9rem;">
+                    Lanjut ke WhatsApp
+                </a>
+                <div class="text-content active" style="font-size: 0.7rem; margin-top:10px; color:#888;">
+                    (Jika tidak dialihkan otomatis, klik tombol di atas)
                 </div>
             `;
             mainCard.style.padding = "50px 25px";
             triggerFireworks();
 
-            // Setingan WhatsApp
+            // Coba redirect otomatis setelah 2.5 detik (kembang api jalan dulu)
             setTimeout(() => {
-                const noWA = "6282238398411";
-                const pesan = "Hai, aku udah liat websitenya. Iya, aku maafin kamu kok. ❤️";
-                // Encode pesan agar format spasi/karakter spesial terbaca di URL
-                const whatsappURL = `https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`;
-                
-                // Pindah halaman ke WhatsApp
                 window.location.href = whatsappURL;
-            }, 3000); // Jeda 3 detik agar dia bisa melihat animasi kembang api terlebih dahulu
+            }, 2500); 
         });
 
-        // --- 6. ADVANCED PARTICLE ENGINE (Beautiful Floating Dust & Stars) ---
+        // --- 6. ADVANCED PARTICLE ENGINE (Twinkling Stars + Glowing Orbs) ---
         const canvas = document.getElementById('particlesCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -305,25 +342,26 @@
         resizeCanvas();
 
         let particles = [];
-        const colors = ['#ff7eb3', '#ff2a75', '#ffffff', '#8c52ff'];
+        const colors = ['#ff7eb3', '#ff2a75', '#ffffff', '#ffd1e8'];
 
         class Particle {
             constructor(isFirework = false, x, y) {
                 this.isFirework = isFirework;
                 this.x = x !== undefined ? x : Math.random() * canvas.width;
                 this.y = y !== undefined ? y : Math.random() * canvas.height;
-                this.size = Math.random() * 2.5 + 0.5;
+                this.size = Math.random() * 2 + 0.5;
                 this.color = colors[Math.floor(Math.random() * colors.length)];
                 
                 if (isFirework) {
-                    this.speedX = (Math.random() - 0.5) * (Math.random() * 12);
-                    this.speedY = (Math.random() - 0.5) * (Math.random() * 12);
+                    this.speedX = (Math.random() - 0.5) * (Math.random() * 15);
+                    this.speedY = (Math.random() - 0.5) * (Math.random() * 15);
                     this.life = 1;
-                    this.decay = Math.random() * 0.02 + 0.01;
+                    this.decay = Math.random() * 0.015 + 0.01;
                 } else {
-                    this.speedX = (Math.random() - 0.5) * 0.5;
-                    this.speedY = (Math.random() - 0.5) * 1.5 - 0.5; 
+                    this.speedX = (Math.random() - 0.5) * 0.3;
+                    this.speedY = (Math.random() - 0.5) * 1 - 0.5; 
                     this.alpha = Math.random() * 0.5 + 0.1;
+                    this.alphaChange = (Math.random() * 0.02) - 0.01; // Efek berkelap-kelip (twinkling)
                 }
             }
 
@@ -332,9 +370,16 @@
                 this.y += this.speedY;
 
                 if (this.isFirework) {
-                    this.speedY += 0.1; 
+                    this.speedY += 0.08; // Gravitasi kembang api
                     this.life -= this.decay;
                 } else {
+                    // Logika berkelap-kelip
+                    this.alpha += this.alphaChange;
+                    if (this.alpha <= 0.1 || this.alpha >= 0.8) {
+                        this.alphaChange *= -1;
+                    }
+
+                    // Reset partikel jika keluar layar
                     if (this.y < -10) {
                         this.y = canvas.height + 10;
                         this.x = Math.random() * canvas.width;
@@ -351,32 +396,34 @@
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = this.isFirework ? 15 : 8;
                 ctx.shadowColor = this.color;
                 ctx.fill();
                 ctx.restore();
             }
         }
 
-        for (let i = 0; i < 70; i++) {
+        // Inisialisasi partikel ambient
+        for (let i = 0; i < 80; i++) {
             particles.push(new Particle());
         }
 
         function triggerFireworks() {
             particles = []; 
-            for(let i=0; i<3; i++) {
+            for(let i=0; i<4; i++) {
                 setTimeout(() => {
-                    const originX = canvas.width/2 + (Math.random()-0.5)*100;
-                    const originY = canvas.height/2 + (Math.random()-0.5)*100;
-                    for (let j = 0; j < 60; j++) {
+                    const originX = canvas.width/2 + (Math.random()-0.5)*150;
+                    const originY = canvas.height/2 + (Math.random()-0.5)*150;
+                    for (let j = 0; j < 80; j++) {
                         particles.push(new Particle(true, originX, originY));
                     }
-                }, i * 400); 
+                }, i * 350); 
             }
         }
 
         function animate() {
-            ctx.fillStyle = 'rgba(10, 6, 18, 0.3)';
+            // Efek jejak blur yang halus
+            ctx.fillStyle = 'rgba(8, 2, 10, 0.3)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             for (let i = particles.length - 1; i >= 0; i--) {
