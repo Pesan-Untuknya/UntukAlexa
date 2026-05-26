@@ -15,7 +15,7 @@
         }
 
         body {
-            background-color: #050505; /* Dark background for desktop overflow */
+            background-color: #050505;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,7 +29,7 @@
         .mobile-wrapper {
             position: relative;
             width: 100%;
-            max-width: 430px; /* iPhone 14 Pro Max width */
+            max-width: 430px;
             height: 100dvh;
             max-height: 932px;
             background: radial-gradient(circle at top right, #2b1031, #0a0612);
@@ -130,7 +130,7 @@
             color: #ccc;
             border: 1px solid rgba(255, 255, 255, 0.2);
             position: absolute;
-            bottom: -60px; /* Hidden initially, moved by JS */
+            bottom: -60px;
             z-index: 10;
         }
 
@@ -218,27 +218,25 @@
             currentStep++;
             textDisplay.classList.remove('active');
             
-            // Haptic feedback kecil jika didukung browser HP
             if (navigator.vibrate) navigator.vibrate(30);
             
             setTimeout(() => {
                 if (storyLines[currentStep] === "") {
                     textDisplay.style.display = 'none';
                     tapIndicator.style.display = 'none';
-                    touchArea.style.display = 'none'; // Matikan area sentuh agar tombol bisa ditekan
+                    touchArea.style.display = 'none'; 
                     actionArea.classList.add('active');
-                    mainCard.style.padding = "40px 15px 120px 15px"; // Beri ruang untuk tombol lari
+                    mainCard.style.padding = "40px 15px 120px 15px"; 
                     initNoButtonLogic();
                 } else {
                     textDisplay.textContent = storyLines[currentStep];
                     textDisplay.classList.add('active');
                 }
-            }, 500); // Waktu transisi fade out
+            }, 500); 
         });
 
         // --- 4. RUNAWAY BUTTON LOGIC ---
         function initNoButtonLogic() {
-            // Tempatkan tombol "No" tepat di bawah tombol "Yes" pada awalnya
             btnNo.style.bottom = "20px";
             btnNo.style.left = "50%";
             btnNo.style.transform = "translateX(-50%)";
@@ -246,19 +244,16 @@
             const dodgeCursor = (e) => {
                 e.preventDefault();
                 
-                // Ambil batas maksimal area mobile-wrapper
                 const wrapperRect = wrapper.getBoundingClientRect();
                 const btnWidth = btnNo.offsetWidth;
                 const btnHeight = btnNo.offsetHeight;
                 
-                // Kalkulasi posisi random yang aman agar tombol tidak keluar dari layar HP
                 const maxX = wrapperRect.width - btnWidth - 20;
                 const maxY = wrapperRect.height - btnHeight - 20;
 
                 const randomX = Math.max(10, Math.floor(Math.random() * maxX));
                 const randomY = Math.max(10, Math.floor(Math.random() * maxY));
 
-                // Ubah posisi menjadi absolute terhadap wrapper
                 btnNo.style.position = 'absolute';
                 btnNo.style.left = `${randomX}px`;
                 btnNo.style.top = `${randomY}px`;
@@ -267,25 +262,35 @@
                 btnNo.style.transition = "all 0.15s ease-out";
             };
 
-            // Tangkap event sentuh (HP) dan kursor (PC)
             btnNo.addEventListener('touchstart', dodgeCursor, {passive: false});
             btnNo.addEventListener('mouseover', dodgeCursor);
         }
 
-        // --- 5. YES BUTTON SUCCESS EVENT ---
+        // --- 5. YES BUTTON SUCCESS & WHATSAPP REDIRECT ---
         btnYes.addEventListener('click', () => {
-            if (navigator.vibrate) navigator.vibrate([50, 50, 50]); // Vibrate sukses
+            if (navigator.vibrate) navigator.vibrate([50, 50, 50]); 
             
             actionArea.innerHTML = `
                 <div class="text-content active" style="font-size: 1.5rem; color: #ff7eb3; font-weight:600;">
                     Terima kasih, Alexa ❤️
                 </div>
-                <div class="text-content active" style="font-size: 0.9rem; margin-top:10px; color:#e0e0e0;">
-                    Aku janji akan lebih peka dan mengerti kamu.
+                <div class="text-content active" style="font-size: 0.85rem; margin-top:10px; color:#e0e0e0;">
+                    Mengarahkan ke WhatsApp...
                 </div>
             `;
             mainCard.style.padding = "50px 25px";
             triggerFireworks();
+
+            // Setingan WhatsApp
+            setTimeout(() => {
+                const noWA = "6282238398411";
+                const pesan = "Hai, aku udah liat websitenya. Iya, aku maafin kamu kok. ❤️";
+                // Encode pesan agar format spasi/karakter spesial terbaca di URL
+                const whatsappURL = `https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`;
+                
+                // Pindah halaman ke WhatsApp
+                window.location.href = whatsappURL;
+            }, 3000); // Jeda 3 detik agar dia bisa melihat animasi kembang api terlebih dahulu
         });
 
         // --- 6. ADVANCED PARTICLE ENGINE (Beautiful Floating Dust & Stars) ---
@@ -317,7 +322,7 @@
                     this.decay = Math.random() * 0.02 + 0.01;
                 } else {
                     this.speedX = (Math.random() - 0.5) * 0.5;
-                    this.speedY = (Math.random() - 0.5) * 1.5 - 0.5; // Mengalir perlahan ke atas
+                    this.speedY = (Math.random() - 0.5) * 1.5 - 0.5; 
                     this.alpha = Math.random() * 0.5 + 0.1;
                 }
             }
@@ -327,10 +332,9 @@
                 this.y += this.speedY;
 
                 if (this.isFirework) {
-                    this.speedY += 0.1; // Gravity effect for fireworks
+                    this.speedY += 0.1; 
                     this.life -= this.decay;
                 } else {
-                    // Reset partikel jika keluar dari layar atas
                     if (this.y < -10) {
                         this.y = canvas.height + 10;
                         this.x = Math.random() * canvas.width;
@@ -354,13 +358,11 @@
             }
         }
 
-        // Inisialisasi partikel statis
         for (let i = 0; i < 70; i++) {
             particles.push(new Particle());
         }
 
         function triggerFireworks() {
-            // Hapus partikel ambien, ganti dengan ledakan
             particles = []; 
             for(let i=0; i<3; i++) {
                 setTimeout(() => {
@@ -369,12 +371,11 @@
                     for (let j = 0; j < 60; j++) {
                         particles.push(new Particle(true, originX, originY));
                     }
-                }, i * 400); // 3 kali ledakan berurutan
+                }, i * 400); 
             }
         }
 
         function animate() {
-            // Efek ekor panjang (trail) dengan membersihkan canvas menggunakan fill rgba
             ctx.fillStyle = 'rgba(10, 6, 18, 0.3)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -383,7 +384,6 @@
                 p.update();
                 p.draw();
                 
-                // Hapus partikel kembang api yang sudah mati
                 if (p.isFirework && p.life <= 0) {
                     particles.splice(i, 1);
                 }
